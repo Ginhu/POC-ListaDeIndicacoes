@@ -2,7 +2,6 @@ import { Router } from "express"
 import controller from "../controller/controller";
 import { validationMiddleware } from "../middleware/middleware";
 import { deleteSchema, postSchema, putSchema } from "../middleware/schema/schema";
-import { valid } from "joi";
 
 const listRouter = Router()
 

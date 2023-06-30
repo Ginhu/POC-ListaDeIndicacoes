@@ -1,0 +1,26 @@
+CREATE TABLE list (
+	id SERIAL NOT NULL,
+	telefone TEXT NOT NULL UNIQUE,
+	nome TEXT NOT NULL,
+	serviço TEXT NOT NULL,
+	
+	CONSTRAINT list_pkey PRIMARY KEY (id)
+);
+
+INSERT INTO list (telefone, nome, serviço) VALUES ('11 99222-1111', 'gin', 'dev');
+INSERT INTO list (telefone, nome, serviço) VALUES ('11 99555-4444', 'jacke', 'gerente');
+
+SELECT * FROM list;
+
+CREATE TABLE login (
+	id SERIAL NOT NULL,
+	"userId" INT NOT NULL,
+	time TIMESTAMP NOT NULL DEFAULT NOW(),
+	
+	CONSTRAINT login_pkey PRIMARY KEY (id)
+);
+
+SELECT * FROM login;
+
+
+DROP TABLE list;
