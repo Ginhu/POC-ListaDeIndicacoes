@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Moradores {
+  id               Int          @id @default(autoincrement())
+  nome             String
+  ap               String
+  email            String       @unique
+  senha            String
+  login            Login?
+  servidorIndicado Servidores[]
+
+  @@map("moradores")
+}
+
+model Login {
+  id        Int       @id @default(autoincrement())
+  token     String    @unique
+  morador   Moradores @relation(fields: [moradorId], references: [id])
+  moradorId Int       @unique
+
+  @@map("login")
+}
+
+model Servidores {
+  id                  Int                   @id @default(autoincrement())
+  nome                String
+  servico             String
+  email               String                @unique
+  morador             Moradores             @relation(fields: [moradorId], references: [id])
+  moradorId           Int
+  servidoresTelefones ServidoresTelefones[]
+
+  @@map("servidores")
+}
+
+model ServidoresTelefones {
+  servidor   Servidores @relation(fields: [servidorId], references: [id])
+  servidorId Int
+  telefone   Telefone   @relation(fields: [telefoneId], references: [id])
+  telefoneId Int
+
+  @@id([servidorId, telefoneId])
+  @@map("servidoresTelefones")
+}
+
+model Telefone {
+  id                  Int                   @id @default(autoincrement())
+  telefone            String                @unique
+  servidoresTelefones ServidoresTelefones[]
+
+  @@map("telefone")
+}

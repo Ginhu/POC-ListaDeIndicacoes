@@ -3,32 +3,27 @@ import service from "../service/service"
 import { Request, Response } from "express"
 import { Contato } from "../config/protocols"
 
-type ContatoGet = Omit<Contato, "id">
-
 async function getList(req: Request, res: Response ) {
-    const list = await service.getList() as Contato[]
+    const list = await service.getList()
 
     res.status(httpStatus.OK).send(list)
 }
 
 async function postList(req: Request, res: Response) {
-    const {telefone, nome, serviço} = req.body as ContatoGet
-    await service.postList(telefone, nome, serviço)
+    
+    await service.postList(req.body)
 
     res.status(httpStatus.CREATED).send('Contato criado com sucesso')
 }
 
 async function putList(req: Request, res: Response) {
-    const {id, telefone, nome, serviço} = req.body as Contato
-    await service.putList(id, telefone, nome, serviço)
+    await service.putList(req.body)
 
     res.status(httpStatus.OK).send('Contato atualizado com sucesso')
 }
 
 async function deleteList(req: Request, res: Response) {
-    const {id} = req.body
-
-    await service.deleteList(id)
+    await service.deleteList(req.body)
 
     res.status(httpStatus.OK).send('Contato deletado com sucesso')
 }

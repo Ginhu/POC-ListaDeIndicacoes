@@ -1,20 +1,24 @@
-import repositoryConnection from "../repository/repository"
+import repository from "../repository/repository"
+import { Moradores } from "@prisma/client"
+
+export type MoradoresCreate = Omit<Moradores, "id">
+export type MoradoresUpdate = Omit<Moradores, "unknown">
+export type MoradoresId = Omit<Moradores, "nome" | "ap" | "email" | "senha">
 
 async function getList() {
-    const list = await repositoryConnection.getList()
-    return list.rows
+    return await repository.getList()
 }
 
-async function postList(telefone: string, nome: string, serviço: string) {
-    return await repositoryConnection.postList(telefone, nome, serviço)
+async function postList(body: MoradoresCreate) {
+    return await repository.postList(body)
 }
 
-async function putList(id: number, telefone: string, nome: string, serviço: string) {
-    return await repositoryConnection.putList(id, telefone, nome, serviço)
+async function putList(body: MoradoresUpdate) {
+    return await repository.putList(body)
 }
 
-async function deleteList(id: number) {
-    return await repositoryConnection.deleteList(id)
+async function deleteList(body: MoradoresId) {
+    return await repository.deleteList(body)
 }
 
 const service = {

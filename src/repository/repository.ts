@@ -1,29 +1,54 @@
+import prisma from "../config/database"
 import connection from "../config/database"
 import { Contato } from "../config/protocols"
-
-type PostContato = Omit<Contato, "id">
+import { MoradoresCreate, MoradoresId, MoradoresUpdate } from "../service/service"
 
 function getList() {
-    return connection.query<Contato>(`SELECT * FROM list`)
+    return prisma.moradores.findMany()
 }
 
-function postList(telefone: string, nome: string, serviço: string) {
-    return connection.query<PostContato>(`INSERT INTO list (telefone, nome, serviço) VALUES ($1, $2, $3)`, [telefone, nome, serviço])
+function postList(body: MoradoresCreate) {
+    const {nome, ap, email, senha} = body
+    
+    return prisma.moradores.create({
+        data:{
+            nome,
+            ap,
+            email,
+            senha
+        }
+    })
 }
 
-function putList(id: number, telefone: string, nome: string, serviço: string) {
-    return connection.query<PostContato>(`UPDATE list SET telefone=$1, nome=$2, serviço=$3 WHERE id=$4`, [telefone, nome, serviço, id])
+ function putList(body: MoradoresUpdate) {
+    const {id, nome, ap, email, senha} = body
+    return prisma.moradores.update({
+        data: {
+            nome,
+            ap,
+            email,
+            senha
+        },
+        where: {
+            id: id
+        }
+    })
 }
 
-function deleteList(id: number) {
-    return connection.query(`DELETE FROM list WHERE id=$1`, [id])
+function deleteList(body: MoradoresId) {
+    const {id} = body
+    return prisma.moradores.delete({
+        where: {
+            id: id
+        }
+    })
 }
 
-const repositoryConnection = {
+const repository = {
     getList,
     postList,
     putList, 
     deleteList
 }
 
-export default repositoryConnection
+export default repository
